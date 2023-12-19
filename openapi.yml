@@ -50,8 +50,8 @@ paths:
             schema:
               $ref: "#/components/schemas/authentication_request"
             examples:
-              login_request:
-                $ref: "#/components/examples/login_request"
+              authentication_request:
+                $ref: "#/components/examples/authentication_request"
 
       responses:
         "200":
@@ -61,11 +61,36 @@ paths:
               schema:
                 $ref: "#/components/schemas/authentication_response"
               examples:
-                login_response:
-                  $ref: "#/components/examples/login_response"
-                            
+                authentication_response:
+                  $ref: "#/components/examples/authentication_response"
+
         # default:
         #   description: Unexpected error
+  /web/dataset/call_kw/rest.api/read:
+    post:
+      summary: get api_key from call.kw 
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/apiget_request"
+            examples:
+              apiget_request:
+                $ref: "#/components/examples/apiget_request"
+
+      responses:
+        "200":
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/apiget_response"
+              examples:
+                apiget_response:
+                  $ref: "#/components/examples/apiget_response"
+      
 
 
   /api/{model_name}/search:
@@ -3066,17 +3091,99 @@ components:
               type: boolean
             iap_company_enrich:
               type: boolean
-
+    apiget_request:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"]
+          description: JSON-RPC version
+        method:
+          type: string
+          description: Method name
+        params:
+          type: object
+          properties:
+            args:
+              type: array
+              items:
+                type: array
+              description: Arguments for the method
+            model:
+              type: string
+              description: Model name
+            method:
+              type: string
+              description: Method to call
+            kwargs:
+              type: object
+              description: Additional keyword arguments
+          required:
+            - args
+            - model
+            - method
+            - kwargs
+      required:
+        - jsonrpc
+        - method
+        - params
+    apiget_response:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"]
+          description: JSON-RPC version
+        id:
+          type: null
+        result:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: API result ID
+            active:
+              type: boolean
+              description: Indicates if the API is active
+            name:
+              type: string
+              description: API name
+            api_key:
+              type: string
+              description: API key
+            availabilty:
+              type: string
+              description: Availability
+            resource_ids:
+              type: array
+              items:
+                type: any
+              description: Resource IDs
+            description:
+              type: boolean
+              description: Description
+            display_name:
+              type: string
+              description: Display name
+          required:
+            - id
+            - active
+            - name
+            - api_key
+            - availabilty
+            - resource_ids
+            - description
+            - display_name
 
   examples:
-    login_request:
+    authentication_request:
       value:
         jsonrpc: "2.0"
         params:
           db: "odoo15"
           login: "admin"
           password: "admin"
-    login_response:
+    authentication_response:
       value:
         jsonrpc: "2.0"
         id: null
@@ -3131,7 +3238,17 @@ components:
           notification_type: "email"
           odoobot_initialized: true
           iap_company_enrich: false
-  
+    
+    apiget_request:
+      value:
+        jsonrpc: "2.0"
+        method: "call"
+        params:
+          args: [[1], ["active", "name", "api_key", "availabilty", "resource_ids", "description", "display_name"]]
+          model: "rest.api"
+          method: "read"
+          kwargs: {}
+    apiget_response:  
       
     example-0:
       summary: product.template (all Fields)
