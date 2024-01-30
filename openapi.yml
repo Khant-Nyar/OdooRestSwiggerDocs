@@ -25,15 +25,15 @@ servers:
   - url: http://192.128.0.1:8069
     description: Testing Server
 
-  - url: https://{StgOrProd}.linklusion.com
-    Access-Control-Allow-Headers: Content-Type, api_key, Authorization
+  - url: https://{server}.linklusion.com
+    # Access-Control-Allow-Headers: Content-Type, api_key, Authorization
     description: Staging Server Of Linklusion
     variables:
-      StgOrProd:
+      server:
         description: "Environment identifier (Staging or Production)"
         default: "staging"
         enum: ["staging", "production"]
-        type: string
+        
   - url: "https://demo.odoo.com"
     description: "Odoo Official Demo Server"
 
@@ -2982,7 +2982,7 @@ components:
           enum: ["2.0"]
           description: JSON-RPC version
         id:
-          type: null
+          type: string
         result:
           type: object
           properties:
@@ -3008,7 +3008,7 @@ components:
             server_version_info:
               type: array
               items:
-                type: any
+                type: object
             support_url:
               type: string
             name:
@@ -3026,15 +3026,15 @@ components:
             active_ids_limit:
               type: integer
             profile_session:
-              type: null
+              type: string
             profile_collectors:
-              type: null
+              type: string
             profile_params:
-              type: null
+              type: string
             max_file_upload_size:
               type: integer
             home_action_id:
-              type: boolean | null
+              type: number
             cache_hashes:
               type: object
               additionalProperties:
@@ -3088,7 +3088,7 @@ components:
             web_tours:
               type: array
               items:
-                type: any
+                type: object
             tour_disable:
               type: boolean
             notification_type:
@@ -3113,7 +3113,7 @@ components:
             args:
               type: array
               items:
-                type: array
+                type: object
               description: Arguments for the method
             model:
               type: string
@@ -3141,7 +3141,7 @@ components:
           enum: ["2.0"]
           description: JSON-RPC version
         id:
-          type: null
+          type: string
         result:
           type: object
           properties:
@@ -3163,7 +3163,7 @@ components:
             resource_ids:
               type: array
               items:
-                type: any
+                type: number
               description: Resource IDs
             description:
               type: boolean
@@ -3267,6 +3267,60 @@ components:
           method: "read"
           kwargs: {}
     apiget_response:
+      value:
+          jsonrpc: "2.0"
+          id: null
+          result:
+            uid: 2
+            is_system: true
+            is_admin: true
+            user_context:
+              lang: "en_US"
+              tz: "Asia/Tokyo"
+              uid: 2
+            db: "odoo15"
+            server_version: "16.0"
+            server_version_info: [16, 0, 0, "final", 0, ""]
+            support_url: "https://www.odoo.com/buy"
+            name: "Gnext admin"
+            username: "admin"
+            partner_display_name: "Gnext admin"
+            company_id: 1
+            partner_id: 3
+            web.base.url: "http://odoo-stg.linklusion.co.jp"
+            active_ids_limit: 20000
+            profile_session: null
+            profile_collectors: null
+            profile_params: null
+            max_file_upload_size: 134217728
+            home_action_id: false
+            cache_hashes:
+              translations: "84aa58bfca25fbb85f524268d0e7fc241972a116"
+              load_menus: "bd8edb7852782b41cf18f0444917dd8832b780a821ef55c3851e07e229d413d4"
+            currencies:
+              "115":
+                symbol: "K"
+                position: "after"
+                digits: [69, 2]
+            bundle_params:
+              lang: "en_US"
+            user_companies:
+              current_company: 1
+              allowed_companies:
+                "1":
+                  id: 1
+                  name: "My Company"
+                  sequence: 0
+            show_effect: true
+            display_switch_company_menu: false
+            user_id: [2]
+            max_time_between_keys_in_ms: 100
+            dbuuid: "aca10a3a-6afc-11ed-a587-0f09e506bc47"
+            web_tours: []
+            tour_disable: false
+            notification_type: "email"
+            odoobot_initialized: true
+            iap_company_enrich: false
 
     example-0:
       summary: product.template (all Fields)
